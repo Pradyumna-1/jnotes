@@ -14,45 +14,36 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.todo.Note;
-
-
 import helper.FactoryProvider;
 
 @WebServlet("/SaveNoteServlet")
 public class SaveNoteServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    
+    private static final long serialVersionUID = 1L;
+
     public SaveNoteServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		try {
-			
-			
-			String title= request.getParameter("title");
-			String content= request.getParameter("content");
-//			Note note = new Note(title,content,new Date());
-			Note note = new Note(title,content, new Date());
-			
-			Session s= FactoryProvider.getFactory().openSession();
-			Transaction tx = s.beginTransaction();
-			s.save(note);
-			tx.commit();
-			s.close();
-			response.setContentType("text/html");
-			PrintWriter out=response.getWriter();
-			out.println("<h1 style='text-align:center'>Note is Added Successfully</h1>");
-			out.println("<h1 style='text-align:center'><a href='add_notes.jsp'>View all notes</a></h1>");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            String title = request.getParameter("title");
+            String content = request.getParameter("content");
 
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+            Note note = new Note(title, content, new Date());
 
+            Session s = FactoryProvider.getFactory().openSession();
+            Transaction tx = s.beginTransaction();
+
+            s.save(note);
+            tx.commit();
+            s.close();
+
+            response.setContentType("text/html");
+            PrintWriter out = response.getWriter();
+            out.println("<h1 style='text-align:center'>Note Added Successfully</h1>");
+            out.println("<h1 style='text-align:center'><a href='all_notes.jsp'>View All Notes</a></h1>");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
